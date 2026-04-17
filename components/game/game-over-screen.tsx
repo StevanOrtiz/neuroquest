@@ -1,11 +1,19 @@
 "use client"
 
+<<<<<<< HEAD
 import { useState, useEffect, useRef } from "react"
 import { useRouter } from "next/navigation"
 import { motion } from "framer-motion"
 import { Trophy, Skull, Star, Package, ArrowRight, Loader2, Check, BookOpen, Sparkles } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import type { SubjectContext } from "@/app/game/[sessionId]/page"
+=======
+import { useState } from "react"
+import { motion, AnimatePresence } from "framer-motion"
+import { Trophy, Skull, Star, Package, ArrowRight, Loader2 } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import type { ChestReward } from "@/lib/types"
+>>>>>>> f7fef1e511e8ef115bd771a4ec6bdde2208272c5
 
 interface GameOverScreenProps {
   status: "victory" | "defeat"
@@ -14,7 +22,10 @@ interface GameOverScreenProps {
   correctAnswers: number
   totalQuestions: number
   pdfName: string
+<<<<<<< HEAD
   subjectContext?: SubjectContext | null
+=======
+>>>>>>> f7fef1e511e8ef115bd771a4ec6bdde2208272c5
   onBackToDashboard: () => void
 }
 
@@ -25,6 +36,7 @@ export function GameOverScreen({
   correctAnswers,
   totalQuestions,
   pdfName,
+<<<<<<< HEAD
   subjectContext,
   onBackToDashboard,
 }: GameOverScreenProps) {
@@ -99,6 +111,40 @@ export function GameOverScreen({
       .catch(() => setChestError(true))
       .finally(() => setSavingChest(false))
   }, [earnedChest, sessionId])
+=======
+  onBackToDashboard,
+}: GameOverScreenProps) {
+  const [chestOpened, setChestOpened] = useState(false)
+  const [reward, setReward] = useState<ChestReward | null>(null)
+  const [openingChest, setOpeningChest] = useState(false)
+
+  const isVictory = status === "victory"
+  const accuracy = Math.round((correctAnswers / totalQuestions) * 100)
+
+  async function handleOpenChest() {
+    setOpeningChest(true)
+    try {
+      const res = await fetch("/api/game/chest", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ sessionId }),
+      })
+      const data = await res.json()
+      if (data.reward) {
+        setReward(data.reward)
+        setChestOpened(true)
+      }
+    } catch {
+      setOpeningChest(false)
+    }
+  }
+
+  const rarityColors = {
+    common: "text-muted-foreground border-border",
+    rare: "text-rpg-mana border-rpg-mana/50 glow-primary",
+    legendary: "text-rpg-legendary border-rpg-legendary/50 glow-legendary",
+  }
+>>>>>>> f7fef1e511e8ef115bd771a4ec6bdde2208272c5
 
   return (
     <main className="min-h-screen flex items-center justify-center px-4 rpg-grid-bg">
@@ -133,9 +179,14 @@ export function GameOverScreen({
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.3 }}
         >
+<<<<<<< HEAD
           {isVictory ? "¡Victoria!" : "Derrota"}
         </motion.h1>
 
+=======
+          {isVictory ? "Victoria!" : "Derrota"}
+        </motion.h1>
+>>>>>>> f7fef1e511e8ef115bd771a4ec6bdde2208272c5
         <motion.p
           className="text-muted-foreground mb-6"
           initial={{ opacity: 0 }}
@@ -160,13 +211,18 @@ export function GameOverScreen({
             <p className="text-xs text-muted-foreground">XP ganada</p>
           </div>
           <div className="p-3 rounded-xl bg-card border border-border/50">
+<<<<<<< HEAD
             <p className="text-lg font-bold font-mono text-foreground">
               {correctAnswers}/{totalQuestions}
             </p>
+=======
+            <p className="text-lg font-bold font-mono text-foreground">{correctAnswers}/{totalQuestions}</p>
+>>>>>>> f7fef1e511e8ef115bd771a4ec6bdde2208272c5
             <p className="text-xs text-muted-foreground">Correctas</p>
           </div>
           <div className="p-3 rounded-xl bg-card border border-border/50">
             <p className="text-lg font-bold font-mono text-foreground">{accuracy}%</p>
+<<<<<<< HEAD
             <p className="text-xs text-muted-foreground">Precisión</p>
           </div>
         </motion.div>
@@ -206,12 +262,21 @@ export function GameOverScreen({
 
         {/* No chest notification for defeats or low accuracy */}
         {isVictory && !earnedChest && !isSubjectQuiz && (
+=======
+            <p className="text-xs text-muted-foreground">Precision</p>
+          </div>
+        </motion.div>
+
+        {/* Chest reward (victory only) */}
+        {isVictory && (
+>>>>>>> f7fef1e511e8ef115bd771a4ec6bdde2208272c5
           <motion.div
             className="mb-6"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.7 }}
           >
+<<<<<<< HEAD
             <p className="text-sm text-muted-foreground">
               Necesitas más del 75% de precisión para ganar un cofre.
             </p>
@@ -292,6 +357,52 @@ export function GameOverScreen({
             {!isSubjectQuiz && <ArrowRight className="w-4 h-4 ml-2" />}
           </Button>
         </div>
+=======
+            <AnimatePresence mode="wait">
+              {!chestOpened ? (
+                <motion.div key="chest-closed">
+                  <Button
+                    onClick={handleOpenChest}
+                    disabled={openingChest}
+                    variant="outline"
+                    size="lg"
+                    className="w-full border-rpg-gold/50 text-rpg-gold hover:bg-rpg-gold/10 glow-gold"
+                  >
+                    {openingChest ? (
+                      <Loader2 className="w-5 h-5 animate-spin" />
+                    ) : (
+                      <>
+                        <Package className="w-5 h-5 mr-2" />
+                        Abrir Cofre de Recompensa
+                      </>
+                    )}
+                  </Button>
+                </motion.div>
+              ) : reward ? (
+                <motion.div
+                  key="chest-opened"
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ type: "spring", stiffness: 200 }}
+                  className={`p-4 rounded-xl border-2 bg-card ${rarityColors[reward.rarity]}`}
+                >
+                  <p className="text-xs font-mono uppercase tracking-wider mb-1 opacity-70">
+                    {reward.rarity === "legendary" ? "Legendario!" : reward.rarity === "rare" ? "Raro" : "Comun"}
+                  </p>
+                  <p className="text-lg font-bold text-foreground">{reward.item_name}</p>
+                  <p className="text-sm text-muted-foreground mt-1">{reward.item_description}</p>
+                </motion.div>
+              ) : null}
+            </AnimatePresence>
+          </motion.div>
+        )}
+
+        {/* Back button */}
+        <Button onClick={onBackToDashboard} className="w-full" size="lg">
+          Volver al panel
+          <ArrowRight className="w-4 h-4 ml-2" />
+        </Button>
+>>>>>>> f7fef1e511e8ef115bd771a4ec6bdde2208272c5
       </motion.div>
     </main>
   )

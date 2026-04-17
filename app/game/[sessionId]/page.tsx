@@ -6,6 +6,7 @@ interface GamePageProps {
   params: Promise<{ sessionId: string }>
 }
 
+<<<<<<< HEAD
 export interface SubjectContext {
   subject_id: string
   module_id: string | null
@@ -13,6 +14,8 @@ export interface SubjectContext {
   quiz_type: "diagnostic" | "section"
 }
 
+=======
+>>>>>>> f7fef1e511e8ef115bd771a4ec6bdde2208272c5
 export default async function GamePage({ params }: GamePageProps) {
   const { sessionId } = await params
   const supabase = await createClient()
@@ -42,6 +45,7 @@ export default async function GamePage({ params }: GamePageProps) {
     .select("*")
     .eq("user_id", user.id)
 
+<<<<<<< HEAD
   // Check if this session is linked to a subject quiz
   const { data: subjectLink } = await supabase
     .from("subject_game_sessions")
@@ -58,12 +62,17 @@ export default async function GamePage({ params }: GamePageProps) {
       }
     : null
 
+=======
+>>>>>>> f7fef1e511e8ef115bd771a4ec6bdde2208272c5
   return (
     <GameClient
       session={session}
       questions={questions ?? []}
       inventory={inventory ?? []}
+<<<<<<< HEAD
       subjectContext={subjectContext}
+=======
+>>>>>>> f7fef1e511e8ef115bd771a4ec6bdde2208272c5
     />
   )
 }

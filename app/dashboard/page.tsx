@@ -1,7 +1,10 @@
 import { createClient } from "@/lib/supabase/server"
 import { redirect } from "next/navigation"
 import { DashboardContent } from "@/components/dashboard/dashboard-content"
+<<<<<<< HEAD
 import { SUBJECTS } from "@/lib/subjects/config"
+=======
+>>>>>>> f7fef1e511e8ef115bd771a4ec6bdde2208272c5
 
 export default async function DashboardPage() {
   const supabase = await createClient()
@@ -22,6 +25,7 @@ export default async function DashboardPage() {
     .order("created_at", { ascending: false })
     .limit(5)
 
+<<<<<<< HEAD
   // Fetch subject progress for sidebar
   const { data: subjectProgress } = await supabase
     .from("user_subject_progress")
@@ -32,12 +36,17 @@ export default async function DashboardPage() {
     (subjectProgress ?? []).map((p) => [p.subject_id, p])
   )
 
+=======
+>>>>>>> f7fef1e511e8ef115bd771a4ec6bdde2208272c5
   return (
     <DashboardContent
       profile={profile}
       recentSessions={recentSessions ?? []}
+<<<<<<< HEAD
       subjects={SUBJECTS}
       subjectProgressMap={progressMap}
+=======
+>>>>>>> f7fef1e511e8ef115bd771a4ec6bdde2208272c5
     />
   )
 }

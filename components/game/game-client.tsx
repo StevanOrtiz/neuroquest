@@ -7,16 +7,25 @@ import { GameHUD } from "./game-hud"
 import { QuestionCard } from "./question-card"
 import { GameOverScreen } from "./game-over-screen"
 import { PowerUpBar } from "./power-up-bar"
+<<<<<<< HEAD
 import type { SubjectContext } from "@/app/game/[sessionId]/page"
+=======
+>>>>>>> f7fef1e511e8ef115bd771a4ec6bdde2208272c5
 
 interface GameClientProps {
   session: GameSession
   questions: Question[]
   inventory: InventoryItem[]
+<<<<<<< HEAD
   subjectContext?: SubjectContext | null
 }
 
 export function GameClient({ session: initialSession, questions: initialQuestions, inventory: initialInventory, subjectContext }: GameClientProps) {
+=======
+}
+
+export function GameClient({ session: initialSession, questions: initialQuestions, inventory: initialInventory }: GameClientProps) {
+>>>>>>> f7fef1e511e8ef115bd771a4ec6bdde2208272c5
   const router = useRouter()
   const [currentIndex, setCurrentIndex] = useState(initialSession.current_question_index)
   const [lives, setLives] = useState(initialSession.lives_remaining)
@@ -129,7 +138,10 @@ export function GameClient({ session: initialSession, questions: initialQuestion
         correctAnswers={correctCount}
         totalQuestions={totalQuestions}
         pdfName={initialSession.pdf_name}
+<<<<<<< HEAD
         subjectContext={subjectContext}
+=======
+>>>>>>> f7fef1e511e8ef115bd771a4ec6bdde2208272c5
         onBackToDashboard={() => router.push("/dashboard")}
       />
     )
